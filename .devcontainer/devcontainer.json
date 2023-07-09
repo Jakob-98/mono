@@ -1,0 +1,29 @@
+{
+    "name": "Python 3.10",
+    "build": {
+        "dockerfile": "Dockerfile",
+        // Update 'VARIANT' to pick a Python version: 3, 3.8, 3.7, 3.6
+        "args": { "VARIANT": "3.10" }
+    },
+
+    "customizations": {
+        "vscode": {
+          "extensions": ["ms-python.python", "DavidAnson.vscode-markdownlint", "njpwerner.autodocstring"],
+          "settings": {
+            "terminal.integrated.defaultProfile.linux": "bash",
+              "terminal.integrated.profiles.linux": {
+                  "bash": {
+                      "path": "/bin/bash"
+                  }
+          }
+        }
+      }
+    },
+    "forwardPorts": [4040],
+
+    // Use 'postCreateCommand' to run commands after the container is created.
+    "postCreateCommand": "python -m pip install --upgrade pip",
+
+    // Set the user the container starts as
+    "remoteUser": "vscode"
+}
