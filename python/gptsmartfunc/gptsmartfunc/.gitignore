@@ -1,0 +1,25 @@
+# Directories
+__pycache__
+.pytest_cache
+.ipynb_checkpoints
+.vscode
+.mypy_cache
+.idea
+
+# Files
+*.py[co]
+*~
+
+# Databases
+*.sqlite
+
+# Logs
+logs
+*.log
+
+# Poetry
+/pyproject.lock
+/.venv
+
+# Jupyter notebook
+.ipynb
