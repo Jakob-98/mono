@@ -1,5 +1,7 @@
 # Python Wrapper for OpenAI GPT Functions PoC
 
+Azure functions docs: https://platform.openai.com/docs/guides/gpt/function-calling
+
 This repository contains a proof of concept (PoC) experiment aimed at illustrating a method to simplify the usage of OpenAI GPT Functions in Python. Our approach involves wrapping existing Python functions to generate metadata for OpenAI GPT functions automatically. 
 
 The repository contains two contrasting examples - a naive approach and our proposed wrapper-based solution.
