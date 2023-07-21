@@ -70,3 +70,40 @@ functions = [
 ```
 
 The wrapper approach allows you to directly retrieve the function metadata via `myfunc.metadata`.
+
+Example with existing library (Pandas):
+
+```python
+import pandas as pd
+
+# load example df raw github
+df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/solar.csv") 
+
+function_specs = [
+    FunctionSpec(
+        func_ref=df.head,
+        parameters=extract_function_metadata(df.head)
+    ),
+    FunctionSpec(
+        func_ref=df.tail,
+        parameters=extract_function_metadata(df.tail)
+    ),
+    FunctionSpec(
+        func_ref=df.describe,
+        parameters=extract_function_metadata(df.describe)
+    )
+]
+
+openai.api_key = os.environ["OPENAI_API_KEY"]
+
+openai_service = OpenAIService(openai, function_specs=function_specs)
+
+messages = [
+    {"role": "user", "content": "What's the head of the dataframe?"}
+]
+
+response = openai_service.call_function(messages)
+print(response)
+```
+
+**Note:** certain functions will not work, e.g. numpy.log, which is built in c. We cannot use inspect.signature for these functions. Instead, we could opt to use `somefunc.types` to infer the types, but this is out of scope for the PoC.
