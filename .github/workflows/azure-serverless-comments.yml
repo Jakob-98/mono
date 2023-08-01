@@ -1,0 +1,50 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - azure/serverless-comments/**
+
+env:
+  AZURE_FUNCTIONAPP_NAME: your-functionapp-name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
+  AZURE_FUNCTIONAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+  AZURE_FUNCTIONAPP_SLOT_NAME: production
+  PYTHON_VERSION: 3.10
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@main
+
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Pip'
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Zip function app files'
+      run: |
+        cd azure/serverless-comments/
+        zip -r functionapp.zip .
+
+    - name: 'Deploy to Azure Functions'
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          az functionapp deployment source config-zip -g <resource-group> -n ${{ env.AZURE_FUNCTIONAPP_NAME }} --src ./azure/serverless-comments/functionapp.zip
