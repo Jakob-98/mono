@@ -10,6 +10,8 @@ packages = [{include = "search_project"}]
 python = "^3.10"
 openai = "^0.27.8"
 pytest = "^7.4.0"
+faiss-cpu = "^1.7.4"
+pypdf2 = "^3.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

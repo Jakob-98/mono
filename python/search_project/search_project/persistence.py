@@ -17,7 +17,7 @@ class ContextDB(ABC):
         pass
 
 class SL3ContextDB(ContextDB):
-    def __init__(self, db_path='context.db'):
+    def __init__(self, db_path='../persistence/context.db'):
         self.connection = sqlite3.connect(db_path)
         self.create_table()
 
