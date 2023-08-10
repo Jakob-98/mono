@@ -4,15 +4,8 @@ from typing import Any, Literal
 
 class LLM(ABC):
     @abstractmethod
-    def call_llm(self, conversation: Any) -> str:
+    def call_llm(self, conversation: Any) -> dict:
         pass
-
-    def message_loop(self, conversation: Any, user_message: str) -> None:
-        # Perhaps add this in convo instead?
-        conversation.add_message("user", user_message)
-        llm_response = self.call_llm(conversation)
-        conversation.add_message("assistant", llm_response, extract=True)
-        return llm_response
 
 class OpenaiGpt(LLM):
     def __init__(self, model: Literal["gpt-3.5-turbo-0613", "gpt-4"] = "gpt-3.5-turbo-0613"):
@@ -20,10 +13,11 @@ class OpenaiGpt(LLM):
 
     def call_llm(self, conversation: Any) -> dict:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
+            model=self.model,  # Use the model property here
             messages=conversation.conversation_history,
         )
         return response
+
 
     def call_llm_functions(self, conversation) -> dict:
         # response = openai.ChatCompletion.create(
