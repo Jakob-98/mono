@@ -51,45 +51,44 @@ def user_interact_with_orchestrator(orchestrator, db):
         orchestrator.user_message(user_msg)
         db.save_context(orchestrator.context)  # Save context after each message
 
-def main():
-    db = ContextDB()
-    
-    selected_context = select_context(db)
-    
-    # Assuming you have defined your LLM and persona
-    llm = OpenaiGpt()
-    
-    orchestrator = Orchestrator(llm, selected_context)
-
-    user_interact_with_orchestrator(orchestrator, db)
-    
-    # Save the current conversation to the database when finished
-    db.save_context(selected_context)
-
-if __name__ == "__main__":
-    main()
-
-# import sys
-
 # def main():
 #     db = ContextDB()
-
-#     # If a message is passed as a CLI argument
-#     if len(sys.argv) > 1:
-#         msg = sys.argv[1]
-#         # Assuming you always want to use the last context for CLI messages
-#         last_context = db.load_last_context()
-#         llm = OpenaiGpt()
-#         orchestrator = Orchestrator(llm, last_context)
-#         orchestrator.user_message(msg)
-#         print(f"Assistant: {orchestrator.context.conversation.conversation_history[-1]['content']}")
-#         return  # Exit after processing the single CLI message
-
-#     # Otherwise, the interactive mode:
+    
 #     selected_context = select_context(db)
+    
+#     # Assuming you have defined your LLM and persona
 #     llm = OpenaiGpt()
+    
 #     orchestrator = Orchestrator(llm, selected_context)
-#     user_interact_with_orchestrator(orchestrator, db)  # Note the added db parameter
+
+#     user_interact_with_orchestrator(orchestrator, db)
+    
+#     # Save the current conversation to the database when finished
+#     db.save_context(selected_context)
 
 # if __name__ == "__main__":
 #     main()
+
+import sys
+
+def main():
+    db = ContextDB()
+
+    # If a message is passed as a CLI argument
+    if len(sys.argv) > 1:
+        msg = sys.argv[1]
+        # Assuming you always want to use the last context for CLI messages
+        last_context = db.load_last_context()
+        llm = OpenaiGpt()
+        orchestrator = Orchestrator(llm, last_context)
+        orchestrator.user_message(msg)
+        return  # Exit after processing the single CLI message
+
+    # Otherwise, the interactive mode:
+    selected_context = select_context(db)
+    llm = OpenaiGpt()
+    orchestrator = Orchestrator(llm, selected_context)
+    user_interact_with_orchestrator(orchestrator, db)  # Note the added db parameter
+
+if __name__ == "__main__":
+    main()

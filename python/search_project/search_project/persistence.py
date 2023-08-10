@@ -1,4 +1,6 @@
 import sqlite3
+from search_project.personas import Assistant
+from search_project.context import Context
 
 class ContextDB:
     def __init__(self, db_path='context.db'):
@@ -25,7 +27,8 @@ class ContextDB:
         cursor.execute("SELECT conversation_history FROM conversations ORDER BY id DESC LIMIT 1")
         result = cursor.fetchone()
         if result:
-            context = Context(...)  # Initialize as needed
+            # TODO hardcoded: Assistant
+            context = Context(Assistant()) # Initialize as needed
             context.conversation.conversation_history = eval(result[0])  # Convert string back to list
             return context
         return None
