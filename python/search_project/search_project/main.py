@@ -1,3 +1,4 @@
+import sys
 from search_project.context import Context
 from search_project.persistence import ContextDB
 from search_project.llm import OpenaiGpt
@@ -51,25 +52,6 @@ def user_interact_with_orchestrator(orchestrator, db):
         orchestrator.user_message(user_msg)
         db.save_context(orchestrator.context)  # Save context after each message
 
-# def main():
-#     db = ContextDB()
-    
-#     selected_context = select_context(db)
-    
-#     # Assuming you have defined your LLM and persona
-#     llm = OpenaiGpt()
-    
-#     orchestrator = Orchestrator(llm, selected_context)
-
-#     user_interact_with_orchestrator(orchestrator, db)
-    
-#     # Save the current conversation to the database when finished
-#     db.save_context(selected_context)
-
-# if __name__ == "__main__":
-#     main()
-
-import sys
 
 def main():
     db = ContextDB()
