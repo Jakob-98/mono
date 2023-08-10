@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "search_project"
+version = "0.1.0"
+description = ""
+authors = ["Jakob Serlier <37184788+Jakob-98@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "search_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^0.27.8"
+pytest = "^7.4.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.25.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
