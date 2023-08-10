@@ -18,8 +18,6 @@ class IntentRecognizer(Persona):
 
 class Assistant(Persona):
     def __init__(self):
-        self.system_message = """
-        You are an AI agent working in a chat context. Your purpose is to assist the user.
-        """
+        self.system_message = """You are an AI agent working in a chat context. Your purpose is to assist the user."""
 
 

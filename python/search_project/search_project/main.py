@@ -1,6 +1,6 @@
 import sys
 from search_project.context import Context
-from search_project.persistence import ContextDB
+from search_project.persistence import ContextDB, SL3ContextDB
 from search_project.llm import OpenaiGpt
 from search_project.personas import Assistant
 from search_project.orchestrator import Orchestrator
@@ -13,8 +13,8 @@ def display_contexts(db):
 
     print("\nPrevious Conversations:\n")
     for idx, (id, convo) in enumerate(contexts):
-        print(f"{idx + 1}. Conversation {id}: {convo[:50]}...")  # Displaying first 50 chars
-    
+        print(f"{idx + 1}. Conversation: {[c['content'][:25] for c in eval(convo)[-5:]]}...")  # Displaying first 50 chars
+
     return contexts
 
 def select_context(db):
@@ -28,6 +28,7 @@ def select_context(db):
                 idx = int(choice) - 1
                 if 0 <= idx < len(contexts):
                     selected_context = Context(Assistant())
+                    selected_context.id = contexts[idx][0]  # Attach the UUID
                     selected_context.conversation.conversation_history = eval(contexts[idx][1])
                     return selected_context
                 else:
@@ -42,6 +43,7 @@ def select_context(db):
     else:
         return Context(Assistant())
 
+
 def user_interact_with_orchestrator(orchestrator, db):
     print("\nStart the conversation (type 'exit' to end the session):")
     while True:
@@ -54,7 +56,7 @@ def user_interact_with_orchestrator(orchestrator, db):
 
 
 def main():
-    db = ContextDB()
+    db = SL3ContextDB()
 
     # If a message is passed as a CLI argument
     if len(sys.argv) > 1:

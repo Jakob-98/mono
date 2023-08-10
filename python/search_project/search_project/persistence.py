@@ -1,8 +1,22 @@
 import sqlite3
+from abc import ABC, abstractmethod
 from search_project.personas import Assistant
 from search_project.context import Context
 
-class ContextDB:
+class ContextDB(ABC):
+    @abstractmethod
+    def save_context(self, context):
+        pass
+
+    @abstractmethod
+    def load_last_context(self):
+        pass
+
+    @abstractmethod
+    def list_last_contexts(self, limit=10):
+        pass
+
+class SL3ContextDB(ContextDB):
     def __init__(self, db_path='context.db'):
         self.connection = sqlite3.connect(db_path)
         self.create_table()
@@ -11,16 +25,19 @@ class ContextDB:
         with self.connection:
             self.connection.execute("""
             CREATE TABLE IF NOT EXISTS conversations (
-                id INTEGER PRIMARY KEY,
-                conversation_history TEXT
+                id TEXT PRIMARY KEY,
+                conversation_history TEXT,
+                short_description TEXT
             )
             """)
 
-    def save_context(self, context):
+    def save_context(self, context, description=""):
         with self.connection:
-            self.connection.execute("""
-            INSERT INTO conversations (conversation_history) VALUES (?)
-            """, (str(context.conversation.conversation_history),))
+            cursor = self.connection.cursor()
+            cursor.execute("""
+            INSERT OR REPLACE INTO conversations (id, conversation_history, short_description) VALUES (?, ?, ?)
+            """, (str(context.id), str(context.conversation.conversation_history), description))
+
 
     def load_last_context(self):
         cursor = self.connection.cursor()
@@ -37,3 +54,4 @@ class ContextDB:
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT id, conversation_history FROM conversations ORDER BY id DESC LIMIT {limit}")
         return cursor.fetchall()
+
