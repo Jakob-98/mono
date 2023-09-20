@@ -12,11 +12,12 @@ class Orchestrator:
             return
 
         # Proceed with regular interaction
-        self.message_loop(message)
+        response = self.message_loop(message)
 
         # Assuming you want to display the conversation after a user message
         if self.context.display_conversation:
             self.context.conversation.display_last_message()
+        return response
 
     def message_loop(self, user_message: str) -> None:
         # Add the user message to the conversation
@@ -27,3 +28,5 @@ class Orchestrator:
 
         # Add the LLM's response to the conversation
         self.context.conversation.add_message("assistant", llm_response, extract=True)
+
+        return llm_response
