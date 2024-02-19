@@ -12,3 +12,7 @@ A monorepo for personal projects, experiments, and more.
 1. [GZIP MNIST](./python/gzip_mnist/mnist_gzip.ipynb): "Solving" MNIST classification with GZIP in a few lines of code.
 1. [Personal personal GPT assistant](./python/search_project/): A personal GPT assistant/boilerplate for own use.
 1. [serverless-comments](./azure/serverless-comments/): Experimenting with hosting simple comments for static websites using azure functions.
+
+## MISC
+
+1. [Bulk git projects archiver](./python/archiving/): This script searches for Git repositories in a specified directory and its subdirectories, and creates an archive of each repository found. It bypasses the safety checks by setting up a custom Git configuration.
